@@ -1782,6 +1782,12 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Icons\delete.png" />
+    <Content Include="Content\Icons\direct-download.png" />
+    <Content Include="Content\Icons\drag-and-drop.png" />
+    <Content Include="Content\Icons\filter-off.png" />
+    <Content Include="Content\Icons\filter.png" />
+    <Content Include="Content\Icons\floppy-disk.png" />
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\site.css" />
     <Content Include="Content\themes\base\accordion.css" />
