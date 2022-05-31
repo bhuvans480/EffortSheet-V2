@@ -1,0 +1,240 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="d-flex flex-row mb-2">
+            <select class="form-control w-25" id="maxRows">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="5000">Show All</option>
+            </select>
+            <button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Save"
+                onclick="saveSelected()"><i style="color: blueviolet; font-size: 16px;"
+                    class="bi bi-check-square-fill"></i></button>
+            <button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Clone"
+                onclick="cloneSelected()"><i style="color: blue; font-size: 16px;"
+                    class="bi bi-window-stack"></i></button>
+            <button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Delete"
+                onclick="deleteSelected()"><i style="color: red; font-size: 16px;" class="bi bi-trash"></i></button>
+            <button class="btn" data-toggle="tooltip" data-placement="top" title="Click to Download"
+                onclick="download()"><i style=" font-size: 16px;" class="bi bi-download"></i></button>
+            <button type="button" id="filterButton" data-toggle="tooltip" data-placement="top" title="Advance filter"
+                class="btn" onclick="openModal()"><i style="color: darkblue; font-size: 16px;"
+                    class="bi bi-funnel-fill"></i></button>
+            <button type="button" id="clearFilter" data-toggle="tooltip" data-placement="top" title="Clear filter" style="display: none;"
+                class="btn" onclick="clearFilter()"><i style="color: Red; font-size: 16px;"
+                    class="bi bi-x-circle-fill"></i></button>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div id="myModal" class="filter" style="display:none">
+            <div class="row justify-content-center">
+                <div class="d-inline-flex col-md-3">
+                    <label class="w-50 mt-2">Start date</label>
+                    <input type="text" id="minDate" class="form-control" placeholder="dd-mm-yy" autocomplete="off">
+                </div>
+
+                <div class="d-inline-flex col-md-3">
+                    <label class="w-50 mt-2">End date</label>
+                    <input type="text" id="maxDate" class="form-control" placeholder="dd-mm-yy" autocomplete="off">
+                </div>
+                <div class="d-inline-flex col-md-3">
+                    <label class="w-50 mt-2">Name</label>
+                    <select id="empName" class="form-control">
+                        <option value="">select</option>
+                        @foreach (var item in ViewBag.nameList)
+                        {
+                            <option>@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="row col-md-3">
+                    <div class="col-8 col-md-4">
+                        <button id="filterButton" class="btn btn-outline-info" onclick="filter()">search</button>
+                    </div>
+                    <div class="col-4 col-md-8">
+                        <button type="button" id="filterClose" class="btn btn-outline-danger"
+                            onclick="closeModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive-sm table-responsive-md">
+    <table id="myTable" class="table table-bordered text-center">
+        <thead>
+            <tr id="table-header">
+                <th hidden>Id</th>
+                <th data-orderable="false" style="width: 30px;">
+                    <input class="selectAll" type="checkbox" id="checkedAll">
+                </th>
+                <th>Date</th>
+                <th>Name</th>
+                <th data-orderable="false">Tower</th>
+                <th data-orderable="false">Activity</th>
+                <th data-orderable="false">Description</th>
+                <th data-orderable="false">Reference</th>
+                <th data-orderable="false">Priority</th>
+                <th data-orderable="false">Hours</th>
+                <th data-orderable="false">Forwarded Team</th>
+            </tr>
+            <tr id="insertRow">
+                <th hidden></th>
+                <th></th>
+                <th>
+                    <input type="text" id="insertDate" class="form-control" placeholder="dd-mm-yy" autocomplete="off"
+                        required>
+                </th>
+                <th>
+                    <select id="insertName" class="form-control" required>
+                        <option value="">select</option>
+                        @foreach (var item in ViewBag.nameList)
+                        {
+                            <option>@item.Name</option>
+                        }
+                    </select>
+                </th>
+                <th>
+                    <select id="insertTower" class="form-control" required>
+                        <option value="Launchpad">Launchpad</option>
+                    </select>
+                </th>
+                <th>
+                    <select id="insertActivity" class="form-control" required>
+                        <option value="">select</option>
+                        @foreach (var item in ViewBag.activityList)
+                        {
+                            <option>@item.Activity</option>
+                        }
+                    </select>
+                </th>
+                <th>
+                    <input type="text" placeholder="Description" id="insertDescription" class="form-control"
+                        autocomplete="off" required>
+                </th>
+                <th>
+                    <input type="text" placeholder="Ticket No." id="insertReference" autocomplete="off"
+                        class="form-control">
+                </th>
+                <th>
+                    <select id="insertPriority" class="form-control">
+                        <option value="">select</option>
+                        @foreach (var item in ViewBag.priorityList)
+                        {
+                            <option>@item.Priority</option>
+                        }
+                    </select>
+                </th>
+                <th>
+                    <input type="number" placeholder="Hours" autocomplete="off" id="insertHours" class="form-control">
+                </th>
+                <th>
+                    <div class="d-flex justify-content-between">
+                        <select id="insertForwardedTeam" class="form-control w-75">
+                            <option value="">select</option>
+                            @foreach (var item in ViewBag.teamList)
+                            {
+                                <option>@item.ForwardedTeam</option>
+                            }
+                        </select>
+                        <button type="button" class="insert-margin btn btn-dark" data-toggle="tooltip"
+                            data-placement="top" title="Click to Insert" onclick="insert()">Add</button>
+                    </div>
+                </th>
+        </thead>
+        <tbody>
+            <tr id="tableRow0"></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class='pagination-container'>
+    <nav>
+        <ul class="pagination">
+
+            <li class="page-item" data-page="prev">
+                <span class="page-link">Prev</span>
+            </li>
+            <!--	Here the JS Function Will Add the Rows -->
+            <li class="page-item" data-page="next" id="prev">
+                <span class="page-link">Next</span>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<div>
+    <table class="table table-bordered table-sm text-center">
+        <thead></thead>
+        <tbody>
+            <tr id="reference" hidden></tr>
+            <tr id="editRow" hidden>
+                <td hidden></td>
+                <td></td>
+                <td id="editRowDate">
+                    <input type="text" id="editDate" class="form-control" required>
+                </td>
+                <td id="editRowName">
+                    <select id="editName" class="form-control" required>
+                        @foreach (var item in ViewBag.nameList)
+                        {
+                            <option>@item.Name</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <select id="editTower" class="form-control" required>
+                        <option value="Launchpad">Launchpad</option>
+                    </select>
+                </td>
+                <td id="editRowActivity">
+                    <select id="editActivity" class="form-control" required>
+                        @foreach (var item in ViewBag.activityList)
+                        {
+                            <option>@item.Activity</option>
+                        }
+                    </select>
+                </td>
+                <td id="editRowDescription">
+                    <input type="text" id="editDescription" class="form-control" required>
+                </td>
+                <td id="editRowReference">
+                    <input type="text" id="editReference" placeholder="Ticket No." class="form-control">
+                </td>
+                <td id="editRowPriority">
+                    <select id="editPriority" class="form-control">
+                        <option value="">select</option>
+                        @foreach (var item in ViewBag.priorityList)
+                        {
+                            <option>@item.Priority</option>
+                        }
+                    </select>
+                </td>
+                <td id="editRowHours">
+                    <input type="number" id="editHours" class="form-control">
+                </td>
+                <td id="editRowForwardedTeam">
+                    <select id="editForwardedTeam" class="form-control">
+                        <option value="">select</option>
+                        @foreach (var item in ViewBag.teamList)
+                        {
+                            <option>@item.ForwardedTeam</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <div>
+                        <a href=" javascript:" id="updateButton">update</a>
+                        <a href="javascript:" id="cancelButton">cancel</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

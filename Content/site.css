@@ -1,0 +1,45 @@
+html {
+  font-size: 12px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#myTable td, #myTable th{
+  vertical-align: middle;
+}
+
+#table-header{
+  background-color: darkorchid;
+  color: white;
+}
+
